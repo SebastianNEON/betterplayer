@@ -219,6 +219,8 @@ class _BetterPlayerState extends State<BetterPlayer>
 
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
+    await Future.delayed(const Duration(milliseconds: 500), () => null);
+
     if (_betterPlayerConfiguration.autoDetectFullscreenDeviceOrientation ==
         true) {
       final aspectRatio =
