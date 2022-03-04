@@ -219,7 +219,7 @@ class _BetterPlayerState extends State<BetterPlayer>
 
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
-    await Future.delayed(const Duration(milliseconds: 500), () => null);
+    await Future.delayed(const Duration(seconds: 1), (() {}));
 
     if (_betterPlayerConfiguration.autoDetectFullscreenDeviceOrientation ==
         true) {
@@ -259,6 +259,7 @@ class _BetterPlayerState extends State<BetterPlayer>
 
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: _betterPlayerConfiguration.systemOverlaysAfterFullScreen);
+    await Future.delayed(const Duration(seconds: 1), (() {}));
     await SystemChrome.setPreferredOrientations(
         _betterPlayerConfiguration.deviceOrientationsAfterFullScreen);
   }
