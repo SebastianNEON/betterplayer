@@ -216,10 +216,8 @@ class _BetterPlayerState extends State<BetterPlayer>
       settings: const RouteSettings(),
       pageBuilder: _fullScreenRoutePageBuilder,
     );
-
-    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-
     await Future.delayed(const Duration(seconds: 1), (() {}));
+    await SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
     if (_betterPlayerConfiguration.autoDetectFullscreenDeviceOrientation ==
         true) {
@@ -257,9 +255,10 @@ class _BetterPlayerState extends State<BetterPlayer>
     // so we do not need to check Wakelock.isEnabled.
     Wakelock.disable();
 
+    await Future.delayed(const Duration(seconds: 1), (() {}));
+
     await SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: _betterPlayerConfiguration.systemOverlaysAfterFullScreen);
-    await Future.delayed(const Duration(seconds: 1), (() {}));
     await SystemChrome.setPreferredOrientations(
         _betterPlayerConfiguration.deviceOrientationsAfterFullScreen);
   }

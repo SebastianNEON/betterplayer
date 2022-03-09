@@ -219,7 +219,14 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
 
     if (milliseconds <= 0) return null;
 
-    return DateTime.fromMillisecondsSinceEpoch(milliseconds);
+    DateTime abDateTime;
+
+    try {
+      abDateTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
+      return abDateTime;
+    } catch (e) {
+      return null;
+    }
   }
 
   @override
