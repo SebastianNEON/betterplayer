@@ -224,7 +224,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
     try {
       abDateTime = DateTime.fromMillisecondsSinceEpoch(milliseconds);
       return abDateTime;
-    } catch (e) {
+    } catch (exception) {
       return null;
     }
   }
@@ -335,6 +335,7 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
       }
       final String? eventType = map["event"] as String?;
       final String? key = map["key"] as String?;
+
       switch (eventType) {
         case 'initialized':
           double width = 0;
@@ -384,38 +385,32 @@ class MethodChannelVideoPlayer extends VideoPlayerPlatform {
             eventType: VideoEventType.bufferingEnd,
             key: key,
           );
-
         case 'play':
           return VideoEvent(
             eventType: VideoEventType.play,
             key: key,
           );
-
         case 'pause':
           return VideoEvent(
             eventType: VideoEventType.pause,
             key: key,
           );
-
         case 'seek':
           return VideoEvent(
             eventType: VideoEventType.seek,
             key: key,
             position: Duration(milliseconds: map['position'] as int),
           );
-
         case 'pipStart':
           return VideoEvent(
             eventType: VideoEventType.pipStart,
             key: key,
           );
-
         case 'pipStop':
           return VideoEvent(
             eventType: VideoEventType.pipStop,
             key: key,
           );
-
         default:
           return VideoEvent(
             eventType: VideoEventType.unknown,
