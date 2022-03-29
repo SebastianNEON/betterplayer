@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -50,6 +51,7 @@ import com.google.android.exoplayer2.source.hls.HlsMediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
 import io.flutter.plugin.common.EventChannel.EventSink
+import androidx.media.session.MediaButtonReceiver
 import androidx.work.Data
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
@@ -303,8 +305,8 @@ internal class BetterPlayer(
             context,
             NOTIFICATION_ID,
             playerNotificationChannelName!!,
-       
-        ).setMediaDescriptionAdapter(mediaDescriptionAdapter).build()
+            mediaDescriptionAdapter
+        ).build()
         playerNotificationManager!!.setPlayer(exoPlayer)
         playerNotificationManager!!.setUseNextAction(false)
         playerNotificationManager!!.setUsePreviousAction(false)
@@ -562,8 +564,8 @@ internal class BetterPlayer(
         }
     }
 
-    private fun setAudioAttributes(exoPlayer: SimpleExoPlayer, mixWithOthers: Boolean) {
-        val audioComponent = exoPlayer.audioComponent ?: return
+    private fun setAudioAttributes(exoPlayer: SimpleExoPlayer?, mixWithOthers: Boolean) {
+        val audioComponent = exoPlayer!!.audioComponent ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioComponent.setAudioAttributes(
                 AudioAttributes.Builder().setContentType(C.CONTENT_TYPE_MOVIE).build(),
@@ -665,8 +667,9 @@ internal class BetterPlayer(
      * @param setupControlDispatcher - should add control dispatcher to created MediaSession
      * @return - configured MediaSession instance
      */
-    fun setupMediaSession(context: Context, setupControlDispatcher: Boolean): MediaSessionCompat {
+    fun setupMediaSession(context: Context?, setupControlDispatcher: Boolean): MediaSessionCompat {
         mediaSession?.release()
+        val mediaButtonReceiver = ComponentName(context!!, MediaButtonReceiver::class.java)
         val mediaButtonIntent = Intent(Intent.ACTION_MEDIA_BUTTON)
         val pendingIntent = PendingIntent.getBroadcast(
             context!!,
@@ -785,7 +788,7 @@ internal class BetterPlayer(
     }
 
     fun setMixWithOthers(mixWithOthers: Boolean) {
-        setAudioAttributes(exoPlayer!!, mixWithOthers)
+        setAudioAttributes(exoPlayer, mixWithOthers)
     }
 
     fun dispose() {
